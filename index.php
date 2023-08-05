@@ -13,9 +13,20 @@
             
         }
 
+        // get user id from url
+        if(isset($_GET['user_id'])){
+            $user_id = $_GET['user_id'];
+
+        } else{
+            header("Location: login.php");
+            exit();
+        }
+
 ?>
 
 <div class="contenedor">
+
+    <input type="hidden" id="user" value="<?php echo $user_id; ?>">
 
     <?php
         include 'inc/templates/sidebar.php'; 

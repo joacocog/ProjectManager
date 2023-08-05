@@ -79,6 +79,7 @@ if($action === 'login'){
                 // login successfull
                 $answer = array(
                     'answer' => 'successfull',
+                    'id' => $user_id,
                     'name' => $user_name,
                     'type' => $action
                 );

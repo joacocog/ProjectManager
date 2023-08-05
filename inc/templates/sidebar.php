@@ -5,16 +5,17 @@
     
         <div class="panel lista-proyectos">
             <h2>Projects</h2>
-            <ul id="proyectos">
+            <ul id="proyectos" class="proyectos">
                 <?php
-                    $projects = getProjects();
+                    $projects = getProjects($user_id);
 
                     if($projects){
                         foreach ($projects as $project){ ?>
-                            <li>
-                            <a href="index.php?project_id=<?php echo $project['id'] ?>" id="proyecto:<?php echo $project['id'] ?>">
+                            <li id="proyecto:<?php echo $project['id'] ?>">
+                            <a href="index.php?user_id=<?php echo $user_id?>&project_id=<?php echo $project['id'] ?>" id="proyecto:<?php echo $project['id'] ?>">
                                 <?php echo $project['nombre'] ?>
                             </a>
+                            <i class="fas fa-trash delete" ></i>
                             </li>
                 <?php  } 
                     }

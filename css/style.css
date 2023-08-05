@@ -149,8 +149,27 @@ body.index {
 }
 .lista-proyectos ul li a:hover {
     color: #FDD835;
+    cursor: pointer;
 }
 
+#proyectos li {
+    display: flex;
+    justify-content: space-between;
+}
+
+#proyectos li {
+    display: flex;
+    justify-content: space-between;
+}
+
+#proyectos li i{
+    color: white;
+}
+
+#proyectos li i:hover{
+    color: red;
+    cursor: pointer;
+}
 
 /** Contenido Principal */
 .contenedor {

@@ -39,8 +39,9 @@ function validarRegistro(e){
         // data return
         xhr.onload = function(){
             if(this.status === 200){
-                var answer = JSON.parse(xhr.responseText);
-                console.log(answer);
+                var answer = JSON.parse(xhr.responseText),
+                    userId = answer.id;
+
                 // if answer is succesfull
                 if(answer.answer === 'successfull'){
                     // new user
@@ -58,7 +59,7 @@ function validarRegistro(e){
                         })
                         .then(result =>{
                             if(result.value){
-                                window.location.href = 'index.php';
+                                window.location.href = `index.php?user_id=${userId}`;
                             }
                         })
                     }

@@ -14,10 +14,10 @@ getPageName();
 
 // Get all projects
 
-function getProjects(){
+function getProjects($user_id){
     include 'conn.php';
     try{
-        return $conn->query('SELECT id, nombre FROM proyectos');
+        return $conn->query("SELECT id, nombre FROM proyectos WHERE id_usuario = {$user_id}");
     }catch(Exception $e){
         echo "Error! :" . $e->getMessage();
         return false;

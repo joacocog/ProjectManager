@@ -7,6 +7,9 @@ function eventListeners(){
     // Button to create project
     document.querySelector('.crear-proyecto a').addEventListener('click', newProject);
 
+    //Button to delete projects
+    document.querySelector('.proyectos').addEventListener('click', deleteProject);
+
     // button for a new task
     document.querySelector('.nueva-tarea').addEventListener('click', addTask);
 
@@ -47,6 +50,7 @@ function saveProjectDB(projectName){
     var data = new FormData();
     data.append('project', projectName);
     data.append('action', 'crear');
+    data.append('user_id', document.querySelector('#user').value);
 
     // Open Conn
     xhr.open('POST', 'inc/models/project-model.php', true);
@@ -72,6 +76,7 @@ function saveProjectDB(projectName){
                     newProject.innerHTML = `
                         <a href="index.php?project_id=${project_id}" id="proyecto:${project_id}">
                             ${project}
+                            <i class="fas fa-trash"></i>
                         </a>
                     `;
 
@@ -80,7 +85,7 @@ function saveProjectDB(projectName){
                     projectList.appendChild(newProject);
 
                     // Redirect
-                      window.location.href = 'index.php?project_id=' + project_id;
+                      window.location.href = 'index.php?user_id=' + document.querySelector('#user').value + '&project_id=' + project_id;
                 }else{
                     // update or deleted
                 }
@@ -100,6 +105,69 @@ function saveProjectDB(projectName){
     xhr.send(data);
 }
 
+function deleteProject(e){
+
+    if(e.target.classList.contains('fa-trash')){
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.value) {
+                var deleteProject = e.target.parentElement;
+                // Delete from DB
+                deleteProjectDB(deleteProject);
+
+                // Delete from html
+                deleteProject.remove();
+
+              Swal.fire(
+                'Deleted!',
+                'Your task has been deleted.',
+                'success'
+              )
+
+              window.location.href = 'index.php?user_id=' + document.querySelector('#user').value;
+            }
+          })
+    }
+}
+
+// Delete task from db
+
+function deleteProjectDB(project){
+
+    var projectId = project.id.split(':');
+
+    // Create call ajax
+
+    var xhr = new XMLHttpRequest();
+
+    // Form data
+
+    var data = new FormData();
+    data.append('id', projectId[1]);
+    data.append('action', 'delete');
+
+    // Open conn
+
+    xhr.open('POST', 'inc/models/project-model.php', true);
+
+    // on load
+
+    xhr.onload = function(){
+        if(this.status === 200){
+
+
+        }
+    }
+
+    xhr.send(data);
+}
 // Add a new task to the actual project
 
 function addTask(e){
@@ -160,7 +228,12 @@ function addTask(e){
 
                         var emptyList = document.querySelectorAll('.lista-vacia');
                         
-                        document.querySelector('.lista-vacia').remove();
+                        if (typeof emptyList !== 'undefined') {
+
+
+                          } else {
+                            emptyList.remove();
+                          }
                         
 
                         // Insert task
@@ -203,6 +276,7 @@ function addTask(e){
                         title: 'Error',
                         text: 'There was an error'
                       });
+                      
                 }
             }
         }
@@ -281,7 +355,6 @@ function changeTaskStatus(task, state){
 
     xhr.onload = function(){
         if(this.status === 200){
-            console.log(JSON.parse(xhr.responseText));
         }
     }
 
@@ -321,7 +394,7 @@ function deleteTaskDB(task){
             var taskList = document.querySelectorAll('li.tarea');
 
             if(taskList.length === 0){
-                document.querySelector('.listado-pendientes').innerHTML = "<p class='lista-vacia'>No hay tareas en este proyecto</p>";
+                document.querySelector('.listado-pendientes').innerHTML = "<p class='lista-vacia'>There isn't tasks in this project</p>";
             }
         }
     }

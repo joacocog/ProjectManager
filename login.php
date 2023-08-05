@@ -28,6 +28,7 @@
             <div class="campo">
                 <a href="create-user.php">Create a new account</a>
             </div>
+            <input type="hidden" id="user-id" value="">
         </form>
     </div>
 
